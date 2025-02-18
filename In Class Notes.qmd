@@ -1,0 +1,149 @@
+---
+title: "In Class Notes"
+format: html
+editor: visual
+---
+
+Normal distribution
+
+```{r}
+library(mosaic)
+mu <-10 #for "mean parameter!#
+sigma <-2 # for "sd" parameter!
+plotDist("norm", mean=mu, sd=sigma, xlab="x", ylab="frequency")
+```
+
+closer to 10 if larger sample size s1 \<-rnorm (n= 100, mean = 10, sd = 2) mean(s1)dd options to executable code like this
+
+n= 100 instead of 10
+
+```{r}
+s1 <-rnorm (n= 100, mean = 10, sd = 2)
+mean(s1)
+```
+
+what happnes to SD if we change sample size ; gets closer to 2
+
+```{r}
+s2 <- rnorm(n = 1000, mean = 10, sd = 2)
+mean(s2)
+sd(s2)
+```
+
+#### The sampling distribution of a statistic
+
+each time we select a sample and calculate a summary statistic we get slightly different results, if we repast this sampling process multiple times, we can use the results to generate a new distribution for those particular summary statistics of interest.
+
+Sampling Distribution: set of possible statistics that could have been generated if the data collection process is repeated many times, along with the probabilities of these possible values 
+
+generates a sampling distribution for the mean of our sample
+```{r}
+reps <- 500
+samp_dist_mean <-
+  do(reps) * mean(rnorm(n=10, mean = 10, sd = 2))
+str(samp_dist_mean)
+histogram(samp_dist_mean$mean)
+```
+
+increasing sample size; makes histogram more narrow
+```{r}
+reps <- 500
+samp_dist_mean <-
+  do(reps) * mean(rnorm(n=1000, mean = 10, sd = 2))
+str(samp_dist_mean)
+histogram(samp_dist_mean$mean)
+```
+
+calculating the median instead oof the mean 
+```{r}
+samp_dist_median <-
+  do(reps) * median(rnorm(n = 10, mean = 10, sd = 2))
+str(samp_dist_median)
+histogram(samp_dist_median$median)
+```
+
+#### Standard Error
+is one meadure o fthis reliability / unreliability of a statistic we caluclate based on a sampling distrribution form the true populaion value of the paremeter of inerest
+```{r}
+reps <- 500
+samp_dist_mean <-
+  do(reps) * mean(rnorm(n=10, mean = 10, sd = 2))
+str(samp_dist_mean)
+se_mean <- sd(samp_dist_mean$mean)
+
+```
+
+We can estimate the standard error assocaited with smapels of size n from a single smaple of size n as the standard deviation of the sample divided by the square root of the sample size
+
+E.g., if x is a vector
+```{r}
+x <- rnorm(n = 10, mean = 10, sd = 2)
+se <- sd(x)/sqrt(length(x))
+```
+
+what happnes to the spread of the smapling distrribution and thus to the SE, as the n gets bigger the SE gets smaller since we are dividing by a much larger number
+
+#### Confidence Intervals
+
+another way of descriit a statistic smapling distriution, and it plays a central role in asic inferential statistics.
+An intercal around our estimate of mean of the smapling distribution for a particular statistic (typically a mean), and ti gives us arange of values into which subsequent estimaes of a statistic would be expexted to fal some critical. proportion fo the time, if the samplinge xercise were to be repeated.
+
+Higher confidence is assoicated with a winder interval. the 95% CD areound a statistic for example describes the rang eof claues into which a new estimate of the statsitc, derived from a subsequent sample, would be expexte to fall 95% of the time 
+
+#### Estimating standard error in a sample... 3 ways
+if population variance/standard deviation is known (rare!)
+  standard deviation of population/sqrt(samplesize)
+  = expexted starndard error of a sample drawn from that population
+If we can sample population repeatedly to generate a sampling distribution
+  standard deviation of sampling distribution
+  
+IF we have a single sample
+  standard deviation of that sample/sqrt(sample size)
+  = an estimate of....
+
+Example Challenge
+```{r}
+x<-rnorm(n = 100, mean = 2, sd = 4)
+mean(x)
+```
+```{r}
+x<-rnorm(n = 100, mean = 2, sd = 4)
+sd(x)
+```
+```{r}
+se<-sd(x)/sqrt(length(x))
+
+```
+```{r}
+reps <- 1000
+s <-
+  do(reps) * mean(rnorm(n=100, mean = 2, sd = 4))
+str(samp_dist_mean)
+
+se_mean <- sd(s$mean)
+histogram(s$mean)
+```
+
+#### Repeat this using a t distribution
+
+lower than 30 df is lo and shows fat ends
+
+```{r}
+plotDist("t", df=99, xlab="x", ylab="frequency", col = "red")
+```
+
+
+```{r}
+reps <- 1000
+samp_dist_mean <-
+  do(reps) *mean(rt(n = 100, df. = 99, ncp = 2))
+histogram(~ mean, data = samp_dist_mean, xlab())
+```
+
+```{r}
+
+plotDist("beta", shape1 = 0.3, shape2 = 4)
+reps <- 1000
+s<- do(reps) * mean(rbeta(n=100, shape1 = .3, shape2 = 4))
+histogram(s$mean)
+```
