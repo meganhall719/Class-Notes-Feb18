@@ -34,9 +34,10 @@ sd(s2)
 
 each time we select a sample and calculate a summary statistic we get slightly different results, if we repast this sampling process multiple times, we can use the results to generate a new distribution for those particular summary statistics of interest.
 
-Sampling Distribution: set of possible statistics that could have been generated if the data collection process is repeated many times, along with the probabilities of these possible values 
+Sampling Distribution: set of possible statistics that could have been generated if the data collection process is repeated many times, along with the probabilities of these possible values
 
 generates a sampling distribution for the mean of our sample
+
 ```{r}
 reps <- 500
 samp_dist_mean <-
@@ -46,6 +47,7 @@ histogram(samp_dist_mean$mean)
 ```
 
 increasing sample size; makes histogram more narrow
+
 ```{r}
 reps <- 500
 samp_dist_mean <-
@@ -54,7 +56,8 @@ str(samp_dist_mean)
 histogram(samp_dist_mean$mean)
 ```
 
-calculating the median instead oof the mean 
+calculating the median instead oof the mean
+
 ```{r}
 samp_dist_median <-
   do(reps) * median(rnorm(n = 10, mean = 10, sd = 2))
@@ -63,7 +66,9 @@ histogram(samp_dist_median$median)
 ```
 
 #### Standard Error
+
 is one meadure o fthis reliability / unreliability of a statistic we caluclate based on a sampling distrribution form the true populaion value of the paremeter of inerest
+
 ```{r}
 reps <- 500
 samp_dist_mean <-
@@ -76,6 +81,7 @@ se_mean <- sd(samp_dist_mean$mean)
 We can estimate the standard error assocaited with smapels of size n from a single smaple of size n as the standard deviation of the sample divided by the square root of the sample size
 
 E.g., if x is a vector
+
 ```{r}
 x <- rnorm(n = 10, mean = 10, sd = 2)
 se <- sd(x)/sqrt(length(x))
@@ -85,35 +91,33 @@ what happnes to the spread of the smapling distrribution and thus to the SE, as 
 
 #### Confidence Intervals
 
-another way of descriit a statistic smapling distriution, and it plays a central role in asic inferential statistics.
-An intercal around our estimate of mean of the smapling distribution for a particular statistic (typically a mean), and ti gives us arange of values into which subsequent estimaes of a statistic would be expexted to fal some critical. proportion fo the time, if the samplinge xercise were to be repeated.
+another way of descriit a statistic smapling distriution, and it plays a central role in asic inferential statistics. An intercal around our estimate of mean of the smapling distribution for a particular statistic (typically a mean), and ti gives us arange of values into which subsequent estimaes of a statistic would be expexted to fal some critical. proportion fo the time, if the samplinge xercise were to be repeated.
 
-Higher confidence is assoicated with a winder interval. the 95% CD areound a statistic for example describes the rang eof claues into which a new estimate of the statsitc, derived from a subsequent sample, would be expexte to fall 95% of the time 
+Higher confidence is assoicated with a winder interval. the 95% CD areound a statistic for example describes the rang eof claues into which a new estimate of the statsitc, derived from a subsequent sample, would be expexte to fall 95% of the time
 
 #### Estimating standard error in a sample... 3 ways
-if population variance/standard deviation is known (rare!)
-  standard deviation of population/sqrt(samplesize)
-  = expexted starndard error of a sample drawn from that population
-If we can sample population repeatedly to generate a sampling distribution
-  standard deviation of sampling distribution
-  
-IF we have a single sample
-  standard deviation of that sample/sqrt(sample size)
-  = an estimate of....
+
+if population variance/standard deviation is known (rare!) standard deviation of population/sqrt(samplesize) = expexted starndard error of a sample drawn from that population If we can sample population repeatedly to generate a sampling distribution standard deviation of sampling distribution
+
+IF we have a single sample standard deviation of that sample/sqrt(sample size) = an estimate of....
 
 Example Challenge
+
 ```{r}
 x<-rnorm(n = 100, mean = 2, sd = 4)
 mean(x)
 ```
+
 ```{r}
 x<-rnorm(n = 100, mean = 2, sd = 4)
 sd(x)
 ```
+
 ```{r}
 se<-sd(x)/sqrt(length(x))
 
 ```
+
 ```{r}
 reps <- 1000
 s <-
@@ -132,7 +136,6 @@ lower than 30 df is lo and shows fat ends
 plotDist("t", df=99, xlab="x", ylab="frequency", col = "red")
 ```
 
-
 ```{r}
 reps <- 1000
 samp_dist_mean <-
@@ -146,4 +149,134 @@ plotDist("beta", shape1 = 0.3, shape2 = 4)
 reps <- 1000
 s<- do(reps) * mean(rbeta(n=100, shape1 = .3, shape2 = 4))
 histogram(s$mean)
+```
+
+## Beginning of Class Feb 20 (My B-DAY : ..) ) Playing with Distributions
+
+Sample distribution with a large enough sample size will look like a normal distribution \### A
+
+```{r}
+library(mosaic)
+plotDist("beta", shape1 = 0.3, shape2 = 4)
+```
+
+### B
+
+```{r}
+plotDist("beta", shape1 = 0.3, shape2 = 4)
+x <- rbeta(n=100, .3, 4)
+x
+histogram(x)
+```
+
+Bigger the n It will look more similar to the shape of the distribution in A; to see what I am talking about change n from 100 to 10000
+
+```{r}
+plotDist("beta", shape1 = 0.3, shape2 = 4)
+x <- rbeta(n=100, .3, 4)
+x
+histogram(x)
+reps <- 500
+s <- do(reps)* mean(rbeta(n=100, .3, 4))
+s
+histogram(s$mean)
+sd(s$mean)
+
+```
+
+If we look at a sample distribution a whole bunch of times it will look more like a normal distribution
+
+### Standard error
+
+```{r}
+x<-rbeta(n=100, .3, 4)
+se <- sd(x)/sqrt(length(x))
+```
+
+#### Key Functions for Distributions
+
+```{r}
+r_(n= ) # draws random samples of size n from a given distribution
+r_(q = ) # returns the quantile associated with a given value of X, i.e, returns the value of the cumulative density function
+r_(p = ) #returns the value of x at a given quantile through the distribution i.e returns the value of the inverse cumulative density function (cdf)
+d_(x= ) # returns the value of the probability density function (pdf) at the values of x
+```
+
+We often use the q\_() function to get the value of x associated with particular quantiles of a distribution, whether that distribution is theoretical or empirical
+
+What value of X is associated with the 0.025 and 0.975 quantiles\
+(which would be the central 95% of a given distribution)
+
+```{r}
+qnorm(p = c(0.025,0.50, 0.975), mean = 0, sd = 1)
+
+```
+What value of X is associated with the 0.025 and 0.975 qunatiles of a beta distribution
+```{r}
+plotDist("beta", shape1 =2, shape2 = 4)
+qbeta(p = c(0.025, 0.975), shape1 = 2, shape2 = 4)
+
+```
+
+mean of 10 standard deviatioon of 2
+```{r}
+plotDist("norm", mean =10, sd = 2)
+c <- qnorm(p = c(0.025,0.25, 0.5,0.75,  0.975), mean = 10, sd = 2)
+c
+```
+
+### Confidence Intervals
+the standard error is a measure of uncertainty in a statistic value the CI
+
+the CI is another way of describing a statistics sampling distribution. 
+
+Interval around an estimate around a statistic we generate.
+
+mean+_critiacl value x SE of the mean
+
+the value of the statistic  +- some critical value x the standard error of the statistic
+
+```{r}
+#vector from unknown population
+x <- c(2.9, 4.8, 8.9, -3.2, 9.1, -2.5, -0.9, -0.1, 2.8, -1.7)
+#mean
+m <-mean(x) 
+# calculating standard error; estimate of uncertainty of estimate of the mean 
+se <-sd(x)/sqrt(length(x))
+#calculating the confidence interval
+ci <- m + qnorm(c(0.025, 0.975)) * se
+# another way to calculate ci
+percent_ci <- 0.95
+
+alpha <- 1 - percent_ci/100
+
+ci <- m + qnorm(c(alpha/2, (1-(alpha/2)))) * se
+```
+
+Central Limit Theorem (CLT)
+
+The sampling distribution of averages(or sums or other summary statistics...) of "independent and identically distributed " (or iid) random variables approaches a normal distribution as sample size increases.
+The clt says nthing about hte probability distrubtion fro revents. in the original population, and that is exactly where is useful
+
+#### take home points
+
+the CLT states that regardless of underlying probability disc of a pop of idnepndent, idetically dsitributioed continuous randome varaibles, the distribution of a statistic - i.e. the sampling distribtion derived from th samples drawn from that underlying ...
+THe ClT suggests that bariables that are expexted to be the sum of multiple indepnedent processes(e.g., measurement errors) will also have distributions that are nearly normal
+calculating some statistic based on a sample fromm the underlqying distibution and adding/subtrating the relevant standard normal quantile x standard error yileds a confidence interbal for the relevant statistic, which gets wider as the coverage increase and gest narrower with less variability and wiht larger sample sizes. 
+If we got a small sample size change how we caluclate the critical value less than 30 oor so instead of using a normal distribution we will use a t- distribution
+t-distribution at high degrees of freedom loooks like a normal distribution. and at lo degrees of freedom looks like a fatter end
+#### calculating CIs by Bootsrapping
+##### Bootstrap Distribution
+
+```{r}
+x <- c(2.9, 4.8, 8.9, -3.2, 9.1, -2.5, -0.9, -0.1, 2.8, -1.7)
+n_boot <- 10000
+boot <- vector(length=n_boot)
+```
+```{r}
+n <- length(x)
+for (i in 1:n_boot){
+  boot[[i]] <- mean(sample(x, n, replace = TRUE))}
+ci <- quantile(boot, probs = c(0.025, 0.975))
+ci
 ```
