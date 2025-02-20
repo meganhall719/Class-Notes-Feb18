@@ -1,0 +1,41 @@
+---
+title: "Module 11 Notes"
+format: html
+editor: visual
+---
+
+## Module 11
+
+### 11.3 Functions
+
+The general format for a function as follows: function_name \<- function(<argument list>) {
+
+}
+
+Arguments are separated by commas \### 11.4 Conditional Expressions Used foor "flow control" to structure what your program does when. the most common conditional exprression os the "if... else..." used to direct flow of a program between two paths
+
+the general format: if(<test>){ \<action 1\> } else{ \<action 2\> } \#### example
+
+```{r}
+i <- TRUE
+
+if (i == TRUE) {
+    print("Yes")
+} else {
+    print("No")
+}
+```
+
+# Module 12
+
+### Population
+
+all of the elements from a set of data (e.g., all of the gorillas in the world) = N
+
+### Sample -
+
+one or more observations drawn from a population by some kind of sampling process (e.g., the set of gorillas living in Rwanda, the set of gorilla skeletons found in a museum) = n
+
+##### Measures of entral Tendency 
+
+Median 
